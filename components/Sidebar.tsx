@@ -24,7 +24,7 @@ const Sidebar = ({ user }: SiderbarProps) => {
                 </Link>
                 {sidebarLinks.map((item) => {
 
-                    const isActive = pathname === item.route || pathname.toString().startsWith(`${item.route}/`)
+                    const isActive = pathname() === item.route || pathname.toString().startsWith(`${item.route}/`)
 
                     return (
                         <Link className={cn('sidebar-link', {'bg-bank-gradient': isActive})} href={item.route} key={item.label}>
