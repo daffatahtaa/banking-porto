@@ -78,19 +78,20 @@ const AuthForm = ({ type }: { type: string }) => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               {type === "sign-up" && (
                 <>
-                  <CustomInput
-                    control={form.control}
-                    name="firstName"
-                    label="First Name"
-                    placeholder="Enter your first name"
-                  />
-
-                  <CustomInput
-                    control={form.control}
-                    name="lastName"
-                    label="Last Name"
-                    placeholder="Enter your last name"
-                  />
+                  <div className="flex gap-4">
+                    <CustomInput
+                      control={form.control}
+                      name="firstName"
+                      label="First Name"
+                      placeholder="Enter your first name"
+                    />
+                    <CustomInput
+                      control={form.control}
+                      name="lastName"
+                      label="Last Name"
+                      placeholder="Enter your last name"
+                    />
+                  </div>
 
                   <CustomInput
                     control={form.control}
@@ -99,33 +100,35 @@ const AuthForm = ({ type }: { type: string }) => {
                     placeholder="Enter your specific address"
                   />
 
-                  <CustomInput
-                    control={form.control}
-                    name="city"
-                    label="State"
-                    placeholder="ex: NY"
-                  />
+                  <div className="flex gap-4">
+                    <CustomInput
+                      control={form.control}
+                      name="city"
+                      label="State"
+                      placeholder="ex: NY"
+                    />
+                    <CustomInput
+                      control={form.control}
+                      name="postalCode"
+                      label="Postal Code"
+                      placeholder="11101"
+                    />
+                  </div>
 
-                  <CustomInput
-                    control={form.control}
-                    name="postalCode"
-                    label="First Name"
-                    placeholder="11101"
-                  />
-
-                  <CustomInput
-                    control={form.control}
-                    name="dateOfBirth"
-                    label="Date of Birth"
-                    placeholder="dd-mm-yyyy"
-                  />
-
-                  <CustomInput
-                    control={form.control}
-                    name="ssn"
-                    label="SSN"
-                    placeholder="ex: 1234"
-                  />
+                  <div className="flex gap-4">
+                    <CustomInput
+                      control={form.control}
+                      name="dateOfBirth"
+                      label="Date of Birth"
+                      placeholder="dd-mm-yyyy"
+                    />
+                    <CustomInput
+                      control={form.control}
+                      name="ssn"
+                      label="SSN"
+                      placeholder="ex: 1234"
+                    />
+                  </div>
 
                   <CustomInput
                     control={form.control}
