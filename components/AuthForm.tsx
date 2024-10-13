@@ -21,8 +21,8 @@ import { Input } from "@/components/ui/input";
 import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import SignUp from "@/app/(auth)/sign-up/page";
 import { useRouter } from "next/navigation";
+import { signIn, signUp } from "@/lib/actions/user.action";
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
@@ -44,12 +44,27 @@ const AuthForm = ({ type }: { type: string }) => {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setisLoading(true);
 
+    const {firstName, lastName, address1, city, state, postalCode, dateOfBirth, ssn, email, password} = data
+
     try {
       // Sign up with Appwrite & create a plaid token
 
       if (type === "sign-up") {
-        const newUser = await signUp(data)
-        setuser(newUser)
+        // console.log(await signUp(data))
+        const userData = {
+          firstName: firstName,
+          lastName: lastName,
+          address1: address1,
+          city: city,
+          state: state,
+          postalCode: postalCode,
+          dateOfBirth: dateOfBirth,
+          ssn: ssn,
+          email: email,
+          password: password
+        }
+        const newUser = await signUp(userData);
+        setuser(newUser);
       }
 
       if (type === "sign-in") {
@@ -58,7 +73,7 @@ const AuthForm = ({ type }: { type: string }) => {
           password: data.password,
         });
 
-        if (response) router.push('/')
+        // if (response) router.push('/')
       }
     } catch (error) {
       console.log(error);
@@ -201,9 +216,9 @@ const AuthForm = ({ type }: { type: string }) => {
                       Loading...
                     </>
                   ) : type === "sign-in" ? (
-                    "Sign in"
+                    "Sign In"
                   ) : (
-                    "Sign up"
+                    "Sign Up"
                   )}
                 </Button>
               </div>
