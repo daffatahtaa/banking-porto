@@ -5,9 +5,16 @@ import { createAdminClient, createSessionClient } from "../appwrite";
 import { ID } from "node-appwrite";
 import { parseStringify } from "../utils";
 
-export const signIn = async (userData: LoginUser) => {
+export const signIn = async ({email, password}: signInProps) => {
   try {
     // Mutation / Database / Make fetch
+    const {account} = await createAdminClient()
+
+    const response = await account.createEmailPasswordSession(email, password)
+
+    console.log(response)
+
+    return parseStringify(response)
   } catch (error) {
     console.error("Error", error);
   }
@@ -45,7 +52,8 @@ export const signUp = async (userData: SignUpParams) => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    return await account.get();
+    const user =  await account.get();
+    return parseStringify(user)
   } catch (error) {
     return null;
   }
