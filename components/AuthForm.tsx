@@ -21,8 +21,11 @@ import { Input } from "@/components/ui/input";
 import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import SignUp from "@/app/(auth)/sign-up/page";
+import { useRouter } from "next/navigation";
 
 const AuthForm = ({ type }: { type: string }) => {
+  const router = useRouter();
   const [user, setuser] = useState(null);
   const [isLoading, setisLoading] = useState(false);
 
@@ -38,11 +41,31 @@ const AuthForm = ({ type }: { type: string }) => {
   });
 
   // 2.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setisLoading(true);
-    console.log(values);
-    setisLoading(false);
-  }
+
+    try {
+      // Sign up with Appwrite & create a plaid token
+
+      if (type === "sign-up") {
+        const newUser = await signUp(data)
+        setuser(newUser)
+      }
+
+      if (type === "sign-in") {
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+
+        if (response) router.push('/')
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setisLoading(false);
+    }
+  };
 
   return (
     <section className="auth-form">
@@ -100,10 +123,17 @@ const AuthForm = ({ type }: { type: string }) => {
                     placeholder="Enter your specific address"
                   />
 
+                  <CustomInput
+                    control={form.control}
+                    name="city"
+                    label="City"
+                    placeholder="Enter your city"
+                  />
+
                   <div className="flex gap-4">
                     <CustomInput
                       control={form.control}
-                      name="city"
+                      name="state"
                       label="State"
                       placeholder="ex: NY"
                     />
@@ -146,19 +176,22 @@ const AuthForm = ({ type }: { type: string }) => {
                 </>
               )}
 
-              <CustomInput
-                control={form.control}
-                name="email"
-                label="Email"
-                placeholder="Enter your email"
-              />
-
-              <CustomInput
-                control={form.control}
-                name="password"
-                label="Password"
-                placeholder="Enter your password"
-              />
+              {type === "sign-in" && (
+                <>
+                  <CustomInput
+                    control={form.control}
+                    name="email"
+                    label="Email"
+                    placeholder="Enter your email"
+                  />
+                  <CustomInput
+                    control={form.control}
+                    name="password"
+                    label="Password"
+                    placeholder="Enter your password"
+                  />
+                </>
+              )}
 
               <div className="flex flex-col gap-4">
                 <Button className="form-btn" disabled={isLoading} type="submit">
